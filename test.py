@@ -4,7 +4,7 @@ import board
 import time
 
 # Initialize DHT22 Sensor
-dht_device = adafruit_dht.DHT22(board.D4)  # DHT22 sensor on GPIO4
+dht_device = adafruit_dht.DHT11(board.D4)  # DHT22 sensor on GPIO4
 
 # MQTT Configuration
 BROKER = "localhost"  # Change this to your Raspberry Pi’s IP if needed
