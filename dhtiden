@@ -1,0 +1,11 @@
+import adafruit_dht
+
+# Try both DHT11 and DHT22
+for sensor, name in [(Adafruit_DHT.DHT11, "DHT11"), (Adafruit_DHT.DHT22, "DHT22")]:
+    humidity, temperature = Adafruit_DHT.read_retry(sensor, 4)  # Change GPIO if needed
+    if humidity is not None and temperature is not None:
+        print(f"Detected Sensor: {name}")
+        print(f"Temperature: {temperature:.2f}°C, Humidity: {humidity:.2f}%")
+        break
+else:
+    print("No valid DHT sensor detected.")
