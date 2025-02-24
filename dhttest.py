@@ -2,7 +2,7 @@ import adafruit_dht
 import board
 import time
 
-dht_device = adafruit_dht.DHT22(board.D17)  # Change D4 if needed
+dht_device = adafruit_dht.DHT11(board.D17)  # Change D4 if needed
 
 try:
     temperature = dht_device.temperature
