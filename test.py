@@ -1,12 +1,10 @@
 import paho.mqtt.client as mqtt
 import adafruit_dht
 import board
-dht_device = adafruit_dht.DHT22(board.D4)
 import time
 
-# Sensor Configuration
-SENSOR = Adafruit_DHT.DHT22  # Change to DHT11 if needed
-PIN = 4  # GPIO pin connected to the sensor
+# Initialize DHT22 Sensor
+dht_device = adafruit_dht.DHT22(board.D4)  # DHT22 sensor on GPIO4
 
 # MQTT Configuration
 BROKER = "localhost"  # Change this to your Raspberry Pi’s IP if needed
@@ -21,14 +19,22 @@ try:
     print(f"Connected to MQTT Broker at {BROKER}:{PORT}")
 
     while True:
-        humidity, temperature = Adafruit_DHT.read_retry(SENSOR, PIN)
-        if temperature and humidity:
-            payload = f"Temperature: {temperature:.2f}°C, Humidity: {humidity:.2f}%"
-            print(f"Publishing: {payload}")
-            client.publish(TOPIC, payload)
-        else:
-            print("Failed to read from sensor, retrying...")
-        
+        try:
+            temperature = dht_device.temperature
+            humidity = dht_device.humidity
+            
+            if temperature is not None and humidity is not None:
+                payload = f"Temperature: {temperature:.2f}°C, Humidity: {humidity:.2f}%"
+                print(f"Publishing: {payload}")
+                client.publish(TOPIC, payload)
+            else:
+                print("Failed to read from sensor, retrying...")
+
+        except RuntimeError as error:
+            print(f"Sensor reading error: {error}")  # Common for DHT sensors, just retry
+            time.sleep(2)
+            continue
+
         time.sleep(5)  # Publish data every 5 seconds
 
 except Exception as e:
