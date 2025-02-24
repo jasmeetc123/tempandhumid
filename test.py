@@ -1,5 +1,7 @@
 import paho.mqtt.client as mqtt
-import Adafruit_DHT
+import adafruit_dht
+import board
+dht_device = adafruit_dht.DHT22(board.D4)
 import time
 
 # Sensor Configuration
